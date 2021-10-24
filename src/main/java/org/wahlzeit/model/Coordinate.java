@@ -23,4 +23,10 @@ public class Coordinate {
     public double getZ() {
         return z;
     }
+
+    public void setCoordinate(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 }

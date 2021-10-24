@@ -134,6 +134,8 @@ public class Photo extends DataObject {
 	public void readFrom(ResultSet rset) throws SQLException {
 		id = PhotoId.getIdFromInt(rset.getInt("id"));
 
+		location = (Location) rset.getObject("location");
+
 		ownerId = rset.getInt("owner_id");
 		ownerName = rset.getString("owner_name");
 		
@@ -161,6 +163,7 @@ public class Photo extends DataObject {
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
 		rset.updateInt("id", id.asInt());
+		rset.updateObject("location", location);
 		rset.updateInt("owner_id", ownerId);
 		rset.updateString("owner_name", ownerName);
 		rset.updateBoolean("owner_notify_about_praise", ownerNotifyAboutPraise);

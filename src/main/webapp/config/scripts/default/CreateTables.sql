@@ -17,6 +17,7 @@ CREATE TABLE users (
 
 CREATE TABLE photos (
 	id integer PRIMARY KEY,
+	location text,
 	owner_id integer REFERENCES users(id),
 	owner_name text,
 	owner_notify_about_praise boolean,

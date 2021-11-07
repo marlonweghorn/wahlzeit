@@ -67,5 +67,15 @@ public class CoordinateTest {
         assertFalse(coordinate.isEqual(new Coordinate(42, 0, 0)));
         assertFalse(coordinate.isEqual(new Coordinate(0, 42, 0)));
         assertFalse(coordinate.isEqual(new Coordinate(0, 0, 42)));
+        assertFalse(coordinate.isEqual(null));
+    }
+
+    @Test
+    public void testAsString() {
+        Coordinate coordinate = new Coordinate(0, 0, 0);
+
+        String coordinate_string = "0.0 0.0 0.0";
+
+        assertEquals(coordinate.asString(), coordinate_string);
     }
 }

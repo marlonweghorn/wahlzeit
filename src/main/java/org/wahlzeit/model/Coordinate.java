@@ -6,7 +6,7 @@ public class Coordinate {
     private double y;
     private double z;
 
-    public Coordinate(double x, double y, double z) {
+    public Coordinate(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -40,7 +40,7 @@ public class Coordinate {
      *
      * @methodtype set
      */
-    public void setCoordinate(double x, double y, double z) {
+    public void setCoordinate(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -50,11 +50,10 @@ public class Coordinate {
      *
      * @methodtype get
      */
-    public double getDistance(Coordinate coordinate) {
+    public double getDistance(final Coordinate coordinate) {
         assert coordinate != null;
 
-        double sum = 0;
-
+        final double sum;
         final double xDiff = x - coordinate.getX();
         final double yDiff = y - coordinate.getY();
         final double zDiff = z - coordinate.getZ();
@@ -68,10 +67,18 @@ public class Coordinate {
      *
      * @methodtype boolean-query
      */
-    public boolean isEqual(Coordinate coordinate) {
-        assert coordinate != null;
+    public boolean isEqual(final Coordinate coordinate) {
+        if (coordinate == null) return false;
 
         return this.equals(coordinate) ||
                 (this.x == coordinate.getX() && this.y == coordinate.getY() && this.z == coordinate.getZ());
+    }
+
+    /**
+     *
+     * @methodtype conversion
+     */
+    public String asString() {
+        return x + " " + y + " " + z;
     }
 }

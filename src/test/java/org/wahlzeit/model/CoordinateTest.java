@@ -2,12 +2,28 @@ package org.wahlzeit.model;
 
 import org.junit.Test;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * All test cases of the class {@link Coordinate}.
  */
 public class CoordinateTest {
+
+    @Test
+    public void testSerialization() throws SQLException {
+        Coordinate coordinate = new Coordinate(42, 73, 6174);
+        ResultSet rset = mock(ResultSet.class);
+
+        coordinate.writeOn(rset);
+
+        verify(rset, times(1)).updateDouble("x", coordinate.getX());
+        verify(rset, times(1)).updateDouble("y", coordinate.getY());
+        verify(rset, times(1)).updateDouble("z", coordinate.getZ());
+    }
 
     @Test
     public void testGetCoordinates() {

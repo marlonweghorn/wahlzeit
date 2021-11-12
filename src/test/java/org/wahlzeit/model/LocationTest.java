@@ -2,13 +2,28 @@ package org.wahlzeit.model;
 
 import org.junit.Test;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 /**
  * All test cases of the class {@link Location}.
  */
 public class LocationTest {
+
+    @Test
+    public void testSerialization() throws SQLException {
+        Coordinate coordinate = mock(Coordinate.class);
+        ResultSet rset = mock(ResultSet.class);
+        Location location = new Location(coordinate);
+
+        location.writeOn(rset);
+
+        verify(coordinate, times(1)).writeOn(rset);
+    }
 
     @Test
     public void testGetCoordinate() {
@@ -34,13 +49,5 @@ public class LocationTest {
         String location_string = "0.0 0.0 0.0";
 
         assertEquals(location.asString(), location_string);
-
-    }
-
-    @Test
-    public void testGetInstance() {
-        Location location = Location.getInstance(".0 0.0 0");
-
-        assertTrue(location.getCoordinate().isEqual(new Coordinate(0, 0, 0)));
     }
 }

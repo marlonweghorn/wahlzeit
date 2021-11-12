@@ -1,6 +1,10 @@
 package org.wahlzeit.model;
 
-public class Location {
+import java.sql.*;
+
+import org.wahlzeit.services.DataObject;
+
+public class Location extends DataObject {
 
     private Coordinate coordinate;
 
@@ -8,18 +12,6 @@ public class Location {
         this.coordinate = coordinate;
     }
 
-    /**
-     *
-     * @methodtype factory
-     */
-    public static Location getInstance(final String location) {
-        String[] xyz = location.split(" ");
-        final double x = Double.parseDouble(xyz[0]);
-        final double y = Double.parseDouble(xyz[1]);
-        final double z = Double.parseDouble(xyz[2]);
-
-        return new Location(new Coordinate(x, y, z));
-    }
 
     /**
      *
@@ -43,5 +35,40 @@ public class Location {
      */
     public String asString() {
         return coordinate.asString();
+    }
+
+
+    /**
+     *
+     */
+    @Override
+    public String getIdAsString() {
+        /* intentionally left blank */
+        return null;
+    }
+
+    /**
+     * @param rset
+     */
+    @Override
+    public void readFrom(ResultSet rset) throws SQLException {
+        this.coordinate.readFrom(rset);
+    }
+
+    /**
+     * @param rset
+     */
+    @Override
+    public void writeOn(ResultSet rset) throws SQLException {
+        this.coordinate.writeOn(rset);
+    }
+
+    /**
+     * @param stmt
+     * @param pos
+     */
+    @Override
+    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
+        /* intentionally left blank */
     }
 }

@@ -17,7 +17,9 @@ CREATE TABLE users (
 
 CREATE TABLE photos (
 	id integer PRIMARY KEY,
-	location text,
+	x float,
+	y float,
+	z float,
 	owner_id integer REFERENCES users(id),
 	owner_name text,
 	owner_notify_about_praise boolean,
@@ -31,11 +33,6 @@ CREATE TABLE photos (
 	praise_sum integer,
 	no_votes integer,
 	creation_time bigint
-);
-
-CREATE TABLE tags (
-	tag text,
-	photo_id integer
 );
 
 CREATE TABLE cases (

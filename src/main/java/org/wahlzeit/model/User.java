@@ -452,7 +452,10 @@ public class User extends Client implements Persistent {
 		photos.add(newPhoto);
 		incWriteCount();
 
-		newPhoto.setLocation(Location.getInstance("42 42 42"));
+		Coordinate coordinate = new Coordinate(42, 42, 42);
+		Location location = new Location(coordinate);
+
+		newPhoto.setLocation(location);
 		newPhoto.setOwnerId(id);
 		newPhoto.setOwnerName(name);
 		newPhoto.setOwnerNotifyAboutPraise(notifyAboutPraise);

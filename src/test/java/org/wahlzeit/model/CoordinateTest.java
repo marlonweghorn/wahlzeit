@@ -35,7 +35,7 @@ public class CoordinateTest {
 
         // Standard cases
         double distance = coordinate.getDistance(new Coordinate(42, 73, 6174));
-        assertEquals(distance, 6174.574398, 1e-6);
+        assertEquals(distance, 6174.574398, Coordinate.EPSILON);
 
         coordinate.setCoordinate(42, 73, 6174);
 
@@ -53,21 +53,39 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testCoordinateIsEqual() {
+    public void testCoordinateEquals() {
         Coordinate coordinate = new Coordinate(0, 0, 0);
 
-        assertTrue(coordinate.isEqual(coordinate));
-        assertTrue(coordinate.isEqual(new Coordinate(0, 0, 0)));
+        assertEquals(coordinate, coordinate);
+
+        assertEquals(coordinate, new Coordinate(Coordinate.EPSILON, 0, 0));
+        assertEquals(coordinate, new Coordinate(0, Coordinate.EPSILON, 0));
+        assertEquals(coordinate, new Coordinate(0, 0, Coordinate.EPSILON));
+
+        double epsilon_smaller = Coordinate.EPSILON - Coordinate.EPSILON * .1;
+
+        assertEquals(coordinate, new Coordinate(epsilon_smaller, 0, 0));
+        assertEquals(coordinate, new Coordinate(0, epsilon_smaller, 0));
+        assertEquals(coordinate, new Coordinate(0, 0, epsilon_smaller));
+    }
+
+    @Test
+    public void testCoordinateNotEquals() {
+        Coordinate coordinate = new Coordinate(0, 0, 0);
+
+        double epsilon_greater = Coordinate.EPSILON + Coordinate.EPSILON * .1;
+
+        assertNotEquals(coordinate, new Coordinate(epsilon_greater , 0, 0));
+        assertNotEquals(coordinate, new Coordinate(0, epsilon_greater, 0));
+        assertNotEquals(coordinate, new Coordinate(0, 0, epsilon_greater));
+        assertNotEquals(coordinate, null);
     }
 
     @Test
     public void testCoordinateIsNotEqual() {
         Coordinate coordinate = new Coordinate(0, 0, 0);
 
-        assertFalse(coordinate.isEqual(new Coordinate(42, 0, 0)));
-        assertFalse(coordinate.isEqual(new Coordinate(0, 42, 0)));
-        assertFalse(coordinate.isEqual(new Coordinate(0, 0, 42)));
-        assertFalse(coordinate.isEqual(null));
+        assertNotEquals(coordinate, null);
     }
 
     @Test

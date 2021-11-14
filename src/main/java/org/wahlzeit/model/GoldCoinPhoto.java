@@ -33,6 +33,7 @@ public class GoldCoinPhoto extends Photo {
     /**
      *
      */
+    @Override
     public void readFrom(ResultSet rset) throws SQLException {
         super.readFrom(rset);
         this.karat = rset.getDouble("karat");
@@ -41,6 +42,7 @@ public class GoldCoinPhoto extends Photo {
     /**
      *
      */
+    @Override
     public void writeOn(ResultSet rset) throws SQLException {
         super.writeOn(rset);
         rset.updateDouble("karat", this.karat);

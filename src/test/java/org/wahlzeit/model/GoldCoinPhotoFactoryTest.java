@@ -10,8 +10,8 @@ public class GoldCoinPhotoFactoryTest {
     public void testInstance() {
         GoldCoinPhotoFactory goldCoinPhotoFactory = GoldCoinPhotoFactory.getInstance();
 
-        assert goldCoinPhotoFactory instanceof PhotoFactory;
         assert goldCoinPhotoFactory != null;
+        assert goldCoinPhotoFactory instanceof PhotoFactory;
     }
 
     @Test

@@ -188,6 +188,7 @@ public class GoldCoinPhotoManager extends PhotoManager {
     /**
      *
      */
+    @Override
     public GoldCoinPhoto createPhoto(File file) throws Exception {
         PhotoId id = PhotoId.getNextId();
         GoldCoinPhoto result = PhotoUtil.createPhoto(file, id);

@@ -21,8 +21,8 @@ public class PhotoUtil {
 	/**
 	 * 
 	 */
-	public static Photo createPhoto(File source, PhotoId id) throws Exception {
-		Photo result = PhotoFactory.getInstance().createPhoto(id);
+	public static GoldCoinPhoto createPhoto(File source, PhotoId id) throws Exception {
+		GoldCoinPhoto result = GoldCoinPhotoFactory.getInstance().createPhoto(id);
 		
 		Image sourceImage = createImageFiles(source, id);
 

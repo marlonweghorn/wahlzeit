@@ -11,6 +11,7 @@ import java.net.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 
+
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
@@ -133,7 +134,9 @@ public class Photo extends DataObject {
 	public void readFrom(ResultSet rset) throws SQLException {
 		id = PhotoId.getIdFromInt(rset.getInt("id"));
 
-		this.location.readFrom(rset);
+		if (this.location != null) {
+			this.location.readFrom(rset);
+		}
 
 		ownerId = rset.getInt("owner_id");
 		ownerName = rset.getString("owner_name");
@@ -162,7 +165,9 @@ public class Photo extends DataObject {
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
 		rset.updateInt("id", id.asInt());
-		this.location.writeOn(rset);
+		if (this.location != null) {
+			this.location.writeOn(rset);
+		}
 		rset.updateInt("owner_id", ownerId);
 		rset.updateString("owner_name", ownerName);
 		rset.updateBoolean("owner_notify_about_praise", ownerNotifyAboutPraise);

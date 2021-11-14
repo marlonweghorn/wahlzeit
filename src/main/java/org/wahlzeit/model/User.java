@@ -201,7 +201,7 @@ public class User extends Client implements Persistent {
 		gender = Gender.getFromInt(rset.getInt("gender"));
 		status = UserStatus.getFromInt(rset.getInt("status"));
 		confirmationCode = rset.getLong("confirmation_code");
-		photos = PhotoManager.getInstance().findPhotosByOwner(name);
+		photos = GoldCoinPhotoManager.getInstance().findPhotosByOwner(name);
 		userPhoto = PhotoManager.getPhoto(PhotoId.getIdFromInt(rset.getInt("photo")));
 		creationTime = rset.getLong("creation_time");
 	}
@@ -448,14 +448,16 @@ public class User extends Client implements Persistent {
 	/**
 	 * 
 	 */
-	public void addPhoto(Photo newPhoto) {
+	public void addPhoto(GoldCoinPhoto newPhoto) {
 		photos.add(newPhoto);
 		incWriteCount();
 
 		Coordinate coordinate = new Coordinate(42, 42, 42);
 		Location location = new Location(coordinate);
-
 		newPhoto.setLocation(location);
+
+		newPhoto.setKarat(999.9);
+
 		newPhoto.setOwnerId(id);
 		newPhoto.setOwnerName(name);
 		newPhoto.setOwnerNotifyAboutPraise(notifyAboutPraise);

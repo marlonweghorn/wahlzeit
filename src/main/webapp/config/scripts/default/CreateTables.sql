@@ -20,6 +20,7 @@ CREATE TABLE photos (
 	x float,
 	y float,
 	z float,
+	karat float,
 	owner_id integer REFERENCES users(id),
 	owner_name text,
 	owner_notify_about_praise boolean,

@@ -14,7 +14,6 @@ import static org.mockito.Mockito.*;
  */
 public class LocationTest {
 
-    /*
     @Test
     public void testSerialization() throws SQLException {
         Coordinate coordinate = mock(Coordinate.class);
@@ -51,6 +50,4 @@ public class LocationTest {
 
         assertEquals(location.asString(), location_string);
     }
-    
-     */
 }

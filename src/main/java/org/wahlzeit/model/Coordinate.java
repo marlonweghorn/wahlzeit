@@ -5,7 +5,8 @@ import org.wahlzeit.services.DataObject;
 
 public abstract class Coordinate extends DataObject {
 
-    public static final double EPSILON = 1e-6;
+    public static final int NUM_VALID_DECIMAL_PLACES = 6;
+    public static final double EPSILON = 1 / Math.pow(10, NUM_VALID_DECIMAL_PLACES);
 
 
     /**

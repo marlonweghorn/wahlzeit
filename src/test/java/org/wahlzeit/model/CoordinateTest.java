@@ -13,154 +13,130 @@ import static org.mockito.Mockito.*;
  */
 public class CoordinateTest {
 
-    /*
     @Test
-    public void testSerialization() throws SQLException {
-        Coordinate coordinate = new Coordinate(42, 73, 6174);
+    public void testCartesianSerialization() throws SQLException {
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(42, 73, 6174);
         ResultSet rset = mock(ResultSet.class);
 
-        coordinate.writeOn(rset);
+        cartesianCoordinate.writeOn(rset);
 
-        verify(rset, times(1)).updateDouble("x", coordinate.getX());
-        verify(rset, times(1)).updateDouble("y", coordinate.getY());
-        verify(rset, times(1)).updateDouble("z", coordinate.getZ());
+        verify(rset, times(1)).updateDouble("x", cartesianCoordinate.getX());
+        verify(rset, times(1)).updateDouble("y", cartesianCoordinate.getY());
+        verify(rset, times(1)).updateDouble("z", cartesianCoordinate.getZ());
     }
-    */
 
     @Test
-    public void testGetCartesianCoordinate_1() {
+    public void testSphericSerialization() throws SQLException {
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(42, 73, 6174);
+        SphericCoordinate sphericCoordinate = cartesianCoordinate.asSphericCoordinate();
+
+        ResultSet rset = mock(ResultSet.class);
+
+        sphericCoordinate.writeOn(rset);
+
+        verify(rset, times(1)).updateDouble("x", cartesianCoordinate.getX());
+        verify(rset, times(1)).updateDouble("y", cartesianCoordinate.getY());
+        verify(rset, times(1)).updateDouble("z", cartesianCoordinate.getZ());
+    }
+
+
+    @Test
+    public void testCartesianInterpretation() {
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, 2, 3);
+        for (int i = 0; i < 1_000_000; i++) {
+            cartesianCoordinate = cartesianCoordinate
+                    .asSphericCoordinate()
+                    .asCartesianCoordinate();
+        }
+        assertEquals(cartesianCoordinate.getX(), 1, Coordinate.EPSILON);
+        assertEquals(cartesianCoordinate.getY(), 2, Coordinate.EPSILON);
+        assertEquals(cartesianCoordinate.getZ(), 3, Coordinate.EPSILON);
+    }
+
+    @Test
+    public void testSphericInterpretation() {
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.6405223,1.1071485, 3.7416573);
+        for (int i = 0; i < 1_000_000; i++) {
+            sphericCoordinate = sphericCoordinate
+                    .asCartesianCoordinate()
+                    .asSphericCoordinate();
+        }
+        assertEquals(sphericCoordinate.getPhi(), 0.6405223, Coordinate.EPSILON);
+        assertEquals(sphericCoordinate.getTheta(), 1.1071485, Coordinate.EPSILON);
+        assertEquals(sphericCoordinate.getRadius(), 3.7416573, Coordinate.EPSILON);
+    }
+
+    @Test
+    public void testGetCartesianDistance_1() {
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, 2, 3);
         CartesianCoordinate cartesianCoordinateOther = new CartesianCoordinate(10, 11, 12);
-        double distanceOfCartesian;
+        double cartesianDistance;
 
-        distanceOfCartesian = cartesianCoordinate.getCartesianDistance(cartesianCoordinateOther);
-        assertEquals(distanceOfCartesian, 15.588457, Coordinate.EPSILON);
+        cartesianDistance = cartesianCoordinate.getCartesianDistance(cartesianCoordinateOther);
+        assertEquals(cartesianDistance, 15.588457, Coordinate.EPSILON);
 
         SphericCoordinate sphericCoordinateOther = cartesianCoordinateOther.asSphericCoordinate();
 
-        distanceOfCartesian = cartesianCoordinate.getCartesianDistance(sphericCoordinateOther);
-        assertEquals(distanceOfCartesian, 15.588457, Coordinate.EPSILON);
+        cartesianDistance = cartesianCoordinate.getCartesianDistance(sphericCoordinateOther);
+        assertEquals(cartesianDistance, 15.588457, Coordinate.EPSILON);
     }
 
     @Test
-    public void testGetCartesianCoordinate_2() {
+    public void testGetCartesianDistance_2() {
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0, 0, 0);
         CartesianCoordinate cartesianCoordinateOther = new CartesianCoordinate(42, 73, 6174);
-        double distanceOfCartesian;
+        double cartesianDistance;
 
-        distanceOfCartesian = cartesianCoordinate.getCartesianDistance(cartesianCoordinateOther);
-        assertEquals(distanceOfCartesian, 6174.574398, Coordinate.EPSILON);
+        cartesianDistance = cartesianCoordinate.getCartesianDistance(cartesianCoordinateOther);
+        assertEquals(cartesianDistance, 6174.574398, Coordinate.EPSILON);
 
         SphericCoordinate sphericCoordinateOther = cartesianCoordinateOther.asSphericCoordinate();
 
-        distanceOfCartesian = cartesianCoordinate.getCartesianDistance(sphericCoordinateOther);
-        assertEquals(distanceOfCartesian, 6174.574398, Coordinate.EPSILON);
-    }
-
-    /*
-    coordinate(42, 73, 6174);
-
-    distance = coordinate.getDistance(new Coordinate(42, 73, 6174));
-    assertEquals(distance, 0, 0);
-
-    // Edge cases
-    coordinate.setCoordinate(0, 0, 0);
-
-    distance = coordinate.getDistance(new Coordinate(0, 0, Double.MIN_VALUE));
-    assertEquals(distance, 0, 0);
-
-    distance = coordinate.getDistance(new Coordinate(0, 0, Double.MAX_VALUE));
-    assertEquals(distance, Double.POSITIVE_INFINITY, 0);
-
-     */
-
-    /*
-    @Test
-    public void testGetCoordinates() {
-        Coordinate coordinate = new Coordinate(0, 0, 0);
-
-        assertEquals(coordinate.getX(), 0, 0);
-        assertEquals(coordinate.getY(), 0, 0);
-        assertEquals(coordinate.getZ(), 0, 0);
+        cartesianDistance = cartesianCoordinate.getCartesianDistance(sphericCoordinateOther);
+        assertEquals(cartesianDistance, 6174.574398, Coordinate.EPSILON);
     }
 
     @Test
-    public void testSetCoordinates() {
-        Coordinate coordinate = new Coordinate(0, 0, 0);
+    public void testGetSphericDistance() {
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.6405223,1.1071485, 3.7416573);
+        SphericCoordinate sphericCoordinateOther = new SphericCoordinate(0.8916760, 0.8329812, 19.1049713);
+        double centralAngle;
 
-        coordinate.setCoordinate(1, 1, 1);
+        centralAngle = sphericCoordinate.getCentralAngle(sphericCoordinateOther);
+        assertEquals(centralAngle, 0.318145, Coordinate.EPSILON);
 
-        assertEquals(coordinate.getX(), 1, 0);
-        assertEquals(coordinate.getY(), 1, 0);
-        assertEquals(coordinate.getZ(),1, 0);
+        CartesianCoordinate cartesianCoordinateOther = sphericCoordinateOther.asCartesianCoordinate();
+
+        centralAngle = sphericCoordinate.getCentralAngle(cartesianCoordinateOther);
+        assertEquals(centralAngle, 0.318145, Coordinate.EPSILON);
     }
 
     @Test
-    public void testEuclidianDistance() {
-        Coordinate coordinate = new Coordinate(0, 0, 0);
-
-        // Standard cases
-        double distance = coordinate.getDistance(new Coordinate(42, 73, 6174));
-        assertEquals(distance, 6174.574398, Coordinate.EPSILON);
-
-        coordinate.setCoordinate(42, 73, 6174);
-
-        distance = coordinate.getDistance(new Coordinate(42, 73, 6174));
-        assertEquals(distance, 0, 0);
-
-        // Edge cases
-        coordinate.setCoordinate(0, 0, 0);
-
-        distance = coordinate.getDistance(new Coordinate(0, 0, Double.MIN_VALUE));
-        assertEquals(distance, 0, 0);
-
-        distance = coordinate.getDistance(new Coordinate(0, 0, Double.MAX_VALUE));
-        assertEquals(distance, Double.POSITIVE_INFINITY, 0);
-    }
-
-    @Test
-    public void testCoordinateEquals() {
-        Coordinate coordinate = new Coordinate(0, 0, 0);
+    public void testCartesianCoordinateEquals() {
+        CartesianCoordinate coordinate = new CartesianCoordinate(0, 0, 0);
 
         assertEquals(coordinate, coordinate);
 
-        assertEquals(coordinate, new Coordinate(Coordinate.EPSILON, 0, 0));
-        assertEquals(coordinate, new Coordinate(0, Coordinate.EPSILON, 0));
-        assertEquals(coordinate, new Coordinate(0, 0, Coordinate.EPSILON));
+        assertEquals(coordinate, new CartesianCoordinate(Coordinate.EPSILON, 0, 0));
+        assertEquals(coordinate, new CartesianCoordinate(0, Coordinate.EPSILON, 0));
+        assertEquals(coordinate, new CartesianCoordinate(0, 0, Coordinate.EPSILON));
 
         double epsilon_smaller = Coordinate.EPSILON - Coordinate.EPSILON * .1;
 
-        assertEquals(coordinate, new Coordinate(epsilon_smaller, 0, 0));
-        assertEquals(coordinate, new Coordinate(0, epsilon_smaller, 0));
-        assertEquals(coordinate, new Coordinate(0, 0, epsilon_smaller));
+        assertEquals(coordinate, new CartesianCoordinate(epsilon_smaller, 0, 0));
+        assertEquals(coordinate, new CartesianCoordinate(0, epsilon_smaller, 0));
+        assertEquals(coordinate, new CartesianCoordinate(0, 0, epsilon_smaller));
     }
 
     @Test
-    public void testCoordinateNotEquals() {
-        Coordinate coordinate = new Coordinate(0, 0, 0);
+    public void testCartesianCoordinateNotEquals() {
+        CartesianCoordinate coordinate = new CartesianCoordinate(0, 0, 0);
 
         double epsilon_greater = Coordinate.EPSILON + Coordinate.EPSILON * .1;
 
-        assertNotEquals(coordinate, new Coordinate(epsilon_greater , 0, 0));
-        assertNotEquals(coordinate, new Coordinate(0, epsilon_greater, 0));
-        assertNotEquals(coordinate, new Coordinate(0, 0, epsilon_greater));
+        assertNotEquals(coordinate, new CartesianCoordinate(epsilon_greater , 0, 0));
+        assertNotEquals(coordinate, new CartesianCoordinate(0, epsilon_greater, 0));
+        assertNotEquals(coordinate, new CartesianCoordinate(0, 0, epsilon_greater));
         assertNotEquals(coordinate, null);
     }
-
-    @Test
-    public void testCoordinateIsNotEqual() {
-        Coordinate coordinate = new Coordinate(0, 0, 0);
-
-        assertNotEquals(coordinate, null);
-    }
-
-    @Test
-    public void testAsString() {
-        Coordinate coordinate = new Coordinate(0, 0, 0);
-
-        String coordinate_string = "0.0 0.0 0.0";
-
-        assertEquals(coordinate.asString(), coordinate_string);
-    }
-     */
 }

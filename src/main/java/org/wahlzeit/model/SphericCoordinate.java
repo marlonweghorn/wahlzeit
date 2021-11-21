@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,11 +73,19 @@ public class SphericCoordinate extends Coordinate {
         final double sinPhi = Math.sin(phi);
         final double cosPhi = Math.cos(phi);
 
-        final double x = radius * cosPhi * sinTheta;
-        final double y = radius * sinPhi * sinTheta;
-        final double z = radius * cosTheta;
+        final double x = radius * cosTheta * sinPhi;
+        final double y = radius * sinTheta * sinPhi;
+        final double z = radius * cosPhi;
 
-        return new CartesianCoordinate(x, y, z);
+
+        final double xRounded =
+                new BigDecimal(x).setScale(NUM_VALID_DECIMAL_PLACES + 1, RoundingMode.HALF_DOWN).doubleValue();
+        final double yRounded =
+                new BigDecimal(y).setScale(NUM_VALID_DECIMAL_PLACES + 1, RoundingMode.HALF_DOWN).doubleValue();
+        final double zRounded =
+                new BigDecimal(z).setScale(NUM_VALID_DECIMAL_PLACES + 1, RoundingMode.HALF_DOWN).doubleValue();
+
+        return new CartesianCoordinate(xRounded, yRounded, zRounded);
     }
 
     /**
@@ -107,10 +117,10 @@ public class SphericCoordinate extends Coordinate {
         final SphericCoordinate other = coordinate.asSphericCoordinate();
 
         final double sum;
-        final double phiDiff = Math.abs(phi - other.getPhi());
+        final double thetaDiff = Math.abs(theta - other.getTheta());
 
-        sum = Math.sin(theta) * Math.sin(other.getTheta())
-                + Math.cos(theta) * Math.cos(other.getTheta()) * Math.cos(phiDiff);
+        sum = Math.sin(phi) * Math.sin(other.getPhi())
+                + Math.cos(phi) * Math.cos(other.getPhi()) * Math.cos(thetaDiff);
 
         return Math.acos(sum);
     }

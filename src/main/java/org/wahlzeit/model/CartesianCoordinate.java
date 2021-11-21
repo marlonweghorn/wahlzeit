@@ -94,15 +94,15 @@ public class CartesianCoordinate extends Coordinate {
     @Override
     public SphericCoordinate asSphericCoordinate() {
         final double radius = Math.sqrt(x * x + y * y + z * z);
-        final double theta = Math.acos(z / radius);
-        final double phi;
+        final double phi = Math.acos(z / radius);
+        final double theta;
 
         if (x > 0) {
-            phi = Math.atan(y / x);
+            theta = Math.atan(y / x);
         } else if (x == 0) {
-            phi = Math.PI / 2;
+            theta = Math.PI / 2;
         } else {
-            phi = Math.atan(y / x) + Math.PI;
+            theta = Math.atan(y / x) + Math.PI;
         }
 
         return new SphericCoordinate(phi, theta, radius);

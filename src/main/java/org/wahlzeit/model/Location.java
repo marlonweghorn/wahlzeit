@@ -6,9 +6,9 @@ import org.wahlzeit.services.DataObject;
 
 public class Location extends DataObject {
 
-    private Coordinate coordinate;
+    private AbstractCoordinate coordinate;
 
-    public Location(final Coordinate coordinate) {
+    public Location(final AbstractCoordinate coordinate) {
         this.coordinate = coordinate;
     }
 
@@ -25,7 +25,7 @@ public class Location extends DataObject {
      *
      * @methodtype set
      */
-    public void setCoordinate(final Coordinate coordinate) {
+    public void setCoordinate(final AbstractCoordinate coordinate) {
         this.coordinate = coordinate;
     }
 

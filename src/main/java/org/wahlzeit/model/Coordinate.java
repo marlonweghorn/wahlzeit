@@ -1,61 +1,49 @@
 package org.wahlzeit.model;
 
+public interface Coordinate {
 
-import org.wahlzeit.services.DataObject;
-
-public abstract class Coordinate extends DataObject {
-
-    public static final int NUM_VALID_DECIMAL_PLACES = 6;
-    public static final double EPSILON = 1 / Math.pow(10, NUM_VALID_DECIMAL_PLACES);
-
+    int NUM_VALID_DECIMAL_PLACES = 6;
+    double EPSILON = 1 / Math.pow(10, NUM_VALID_DECIMAL_PLACES);
 
     /**
      *
      * @methodtype conversion
      */
-    public abstract String asString();
+    String asString();
 
     /**
      *
      * @methodtype conversion
      */
-    public abstract CartesianCoordinate asCartesianCoordinate();
+    CartesianCoordinate asCartesianCoordinate();
 
     /**
      *
      * @methodtype get
      */
-    public abstract double getCartesianDistance(final Coordinate coordinate);
+    double getCartesianDistance(final AbstractCoordinate coordinate);
 
     /**
      *
      * @methodtype conversion
      */
-    public abstract SphericCoordinate asSphericCoordinate();
+    SphericCoordinate asSphericCoordinate();
 
     /**
      *
      * @methodtype get
      */
-    public abstract double getCentralAngle(final Coordinate coordinate);
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Coordinate)) {
-            return false;
-        }
-        Coordinate other = (Coordinate) obj;
-        return isEqual(other);
-    }
+    double getCentralAngle(final AbstractCoordinate coordinate);
 
     /**
      *
      * @methodtype boolean-query
      */
-    public abstract boolean isEqual(final Coordinate coordinate);
+    boolean isEqual(final Coordinate coordinate);
 
-    public abstract int hashCode();
+    /**
+     *
+     * @methodtype conversion
+     */
+    int hashCode();
 }

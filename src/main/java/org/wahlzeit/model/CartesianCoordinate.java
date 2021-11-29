@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class CartesianCoordinate extends Coordinate {
+public class CartesianCoordinate extends AbstractCoordinate {
 
     private double x;
     private double y;
@@ -74,7 +74,7 @@ public class CartesianCoordinate extends Coordinate {
      * @methodtype get
      */
     @Override
-    public double getCartesianDistance(final Coordinate coordinate) {
+    public double getCartesianDistance(final AbstractCoordinate coordinate) {
         final CartesianCoordinate other = coordinate.asCartesianCoordinate();
 
         final double sum;
@@ -92,7 +92,7 @@ public class CartesianCoordinate extends Coordinate {
      * @methodtype conversion
      */
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate asSphericCoordinate() throws ArithmeticException {
         final double radius = Math.sqrt(x * x + y * y + z * z);
         final double phi = Math.acos(z / radius);
         final double theta;
@@ -113,7 +113,7 @@ public class CartesianCoordinate extends Coordinate {
      * @methodtype get
      */
     @Override
-    public double getCentralAngle(final Coordinate coordinate) {
+    public double getCentralAngle(final AbstractCoordinate coordinate) {
         final SphericCoordinate thisSphericCoordinate = this.asSphericCoordinate();
 
         return thisSphericCoordinate.getCentralAngle(coordinate);

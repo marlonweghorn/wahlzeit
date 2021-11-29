@@ -16,7 +16,7 @@ public class LocationTest {
 
     @Test
     public void testSerialization() throws SQLException {
-        Coordinate coordinate = mock(Coordinate.class);
+        AbstractCoordinate coordinate = mock(AbstractCoordinate.class);
         ResultSet rset = mock(ResultSet.class);
         Location location = new Location(coordinate);
 
@@ -27,7 +27,7 @@ public class LocationTest {
 
     @Test
     public void testGetCoordinate() {
-        Coordinate coordinate = new CartesianCoordinate(0, 0, 0);
+        AbstractCoordinate coordinate = new CartesianCoordinate(0, 0, 0);
         Location location = new Location(coordinate);
 
         assertTrue(location.getCoordinate().isEqual(coordinate));

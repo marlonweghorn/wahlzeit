@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * All test cases of the class {@link Coordinate}.
+ * All test cases of the class {@link AbstractCoordinate}.
  */
 public class CoordinateTest {
 
@@ -48,9 +48,9 @@ public class CoordinateTest {
                     .asSphericCoordinate()
                     .asCartesianCoordinate();
         }
-        assertEquals(cartesianCoordinate.getX(), 1, Coordinate.EPSILON);
-        assertEquals(cartesianCoordinate.getY(), 2, Coordinate.EPSILON);
-        assertEquals(cartesianCoordinate.getZ(), 3, Coordinate.EPSILON);
+        assertEquals(cartesianCoordinate.getX(), 1, AbstractCoordinate.EPSILON);
+        assertEquals(cartesianCoordinate.getY(), 2, AbstractCoordinate.EPSILON);
+        assertEquals(cartesianCoordinate.getZ(), 3, AbstractCoordinate.EPSILON);
     }
 
     @Test
@@ -61,9 +61,9 @@ public class CoordinateTest {
                     .asCartesianCoordinate()
                     .asSphericCoordinate();
         }
-        assertEquals(sphericCoordinate.getPhi(), 0.6405223, Coordinate.EPSILON);
-        assertEquals(sphericCoordinate.getTheta(), 1.1071485, Coordinate.EPSILON);
-        assertEquals(sphericCoordinate.getRadius(), 3.7416573, Coordinate.EPSILON);
+        assertEquals(sphericCoordinate.getPhi(), 0.6405223, AbstractCoordinate.EPSILON);
+        assertEquals(sphericCoordinate.getTheta(), 1.1071485, AbstractCoordinate.EPSILON);
+        assertEquals(sphericCoordinate.getRadius(), 3.7416573, AbstractCoordinate.EPSILON);
     }
 
     @Test
@@ -73,12 +73,12 @@ public class CoordinateTest {
         double cartesianDistance;
 
         cartesianDistance = cartesianCoordinate.getCartesianDistance(cartesianCoordinateOther);
-        assertEquals(cartesianDistance, 15.588457, Coordinate.EPSILON);
+        assertEquals(cartesianDistance, 15.588457, AbstractCoordinate.EPSILON);
 
         SphericCoordinate sphericCoordinateOther = cartesianCoordinateOther.asSphericCoordinate();
 
         cartesianDistance = cartesianCoordinate.getCartesianDistance(sphericCoordinateOther);
-        assertEquals(cartesianDistance, 15.588457, Coordinate.EPSILON);
+        assertEquals(cartesianDistance, 15.588457, AbstractCoordinate.EPSILON);
     }
 
     @Test
@@ -88,12 +88,12 @@ public class CoordinateTest {
         double cartesianDistance;
 
         cartesianDistance = cartesianCoordinate.getCartesianDistance(cartesianCoordinateOther);
-        assertEquals(cartesianDistance, 6174.574398, Coordinate.EPSILON);
+        assertEquals(cartesianDistance, 6174.574398, AbstractCoordinate.EPSILON);
 
         SphericCoordinate sphericCoordinateOther = cartesianCoordinateOther.asSphericCoordinate();
 
         cartesianDistance = cartesianCoordinate.getCartesianDistance(sphericCoordinateOther);
-        assertEquals(cartesianDistance, 6174.574398, Coordinate.EPSILON);
+        assertEquals(cartesianDistance, 6174.574398, AbstractCoordinate.EPSILON);
     }
 
     @Test
@@ -103,12 +103,12 @@ public class CoordinateTest {
         double centralAngle;
 
         centralAngle = sphericCoordinate.getCentralAngle(sphericCoordinateOther);
-        assertEquals(centralAngle, 0.318145, Coordinate.EPSILON);
+        assertEquals(centralAngle, 0.318145, AbstractCoordinate.EPSILON);
 
         CartesianCoordinate cartesianCoordinateOther = sphericCoordinateOther.asCartesianCoordinate();
 
         centralAngle = sphericCoordinate.getCentralAngle(cartesianCoordinateOther);
-        assertEquals(centralAngle, 0.318145, Coordinate.EPSILON);
+        assertEquals(centralAngle, 0.318145, AbstractCoordinate.EPSILON);
     }
 
     @Test
@@ -117,11 +117,11 @@ public class CoordinateTest {
 
         assertEquals(coordinate, coordinate);
 
-        assertEquals(coordinate, new CartesianCoordinate(Coordinate.EPSILON, 0, 0));
-        assertEquals(coordinate, new CartesianCoordinate(0, Coordinate.EPSILON, 0));
-        assertEquals(coordinate, new CartesianCoordinate(0, 0, Coordinate.EPSILON));
+        assertEquals(coordinate, new CartesianCoordinate(AbstractCoordinate.EPSILON, 0, 0));
+        assertEquals(coordinate, new CartesianCoordinate(0, AbstractCoordinate.EPSILON, 0));
+        assertEquals(coordinate, new CartesianCoordinate(0, 0, AbstractCoordinate.EPSILON));
 
-        double epsilon_smaller = Coordinate.EPSILON - Coordinate.EPSILON * .1;
+        double epsilon_smaller = AbstractCoordinate.EPSILON - AbstractCoordinate.EPSILON * .1;
 
         assertEquals(coordinate, new CartesianCoordinate(epsilon_smaller, 0, 0));
         assertEquals(coordinate, new CartesianCoordinate(0, epsilon_smaller, 0));
@@ -132,7 +132,7 @@ public class CoordinateTest {
     public void testCartesianCoordinateNotEquals() {
         CartesianCoordinate coordinate = new CartesianCoordinate(0, 0, 0);
 
-        double epsilon_greater = Coordinate.EPSILON + Coordinate.EPSILON * .1;
+        double epsilon_greater = AbstractCoordinate.EPSILON + AbstractCoordinate.EPSILON * .1;
 
         assertNotEquals(coordinate, new CartesianCoordinate(epsilon_greater , 0, 0));
         assertNotEquals(coordinate, new CartesianCoordinate(0, epsilon_greater, 0));

@@ -131,24 +131,12 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public boolean isEqual(final Coordinate coordinate) {
-        SphericCoordinate other = coordinate.asSphericCoordinate();
-
-        final boolean eqPhi = Math.abs(other.getPhi() - phi) <= EPSILON;
-        final boolean eqTheta = Math.abs(other.getTheta() - theta) <= EPSILON;
-        final boolean eqRadius = Math.abs(other.getRadius() - radius) <= EPSILON;
-
-        return eqPhi && eqTheta && eqRadius;
+        return this.asCartesianCoordinate().isEqual(coordinate);
     }
 
     @Override
     public int hashCode() {
-        final CartesianCoordinate thisCartesianCoordinate = this.asCartesianCoordinate();
-
-        final double x = thisCartesianCoordinate.getX();
-        final double y = thisCartesianCoordinate.getY();
-        final double z = thisCartesianCoordinate.getZ();
-
-        return Objects.hash(x, y, z);
+        return this.asCartesianCoordinate().hashCode();
     }
 
     /**
@@ -165,16 +153,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public void readFrom(ResultSet rset) throws SQLException {
-        final double x = rset.getDouble("x");
-        final double y = rset.getDouble("y");
-        final double z = rset.getDouble("z");
-
-        final SphericCoordinate sphericCoordinate =
-                new CartesianCoordinate(x, y, z).asSphericCoordinate();
-
-        phi = sphericCoordinate.getPhi();
-        theta = sphericCoordinate.getTheta();
-        radius = sphericCoordinate.getRadius();
+        this.asCartesianCoordinate().readFrom(rset);
     }
 
     /**
@@ -182,11 +161,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public void writeOn(ResultSet rset) throws SQLException {
-        final CartesianCoordinate cartesianCoordinate = this.asCartesianCoordinate();
-
-        rset.updateDouble("x", cartesianCoordinate.getX());
-        rset.updateDouble("y", cartesianCoordinate.getY());
-        rset.updateDouble("z", cartesianCoordinate.getZ());
+        this.asCartesianCoordinate().writeOn(rset);
     }
 
     /**

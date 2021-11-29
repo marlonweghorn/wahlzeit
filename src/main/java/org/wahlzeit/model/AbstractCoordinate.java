@@ -16,4 +16,10 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
         Coordinate other = (Coordinate) obj;
         return isEqual(other);
     }
+
+    /**
+     *
+     * @methodtype conversion
+     */
+    public abstract int hashCode();
 }

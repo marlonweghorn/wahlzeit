@@ -40,10 +40,4 @@ public interface Coordinate {
      * @methodtype boolean-query
      */
     boolean isEqual(final Coordinate coordinate);
-
-    /**
-     *
-     * @methodtype conversion
-     */
-    int hashCode();
 }

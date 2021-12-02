@@ -5,6 +5,10 @@ public interface Coordinate {
     int NUM_VALID_DECIMAL_PLACES = 6;
     double EPSILON = 1 / Math.pow(10, NUM_VALID_DECIMAL_PLACES);
 
+    /**
+     *
+     * @methodtype assertion
+     */
     void assertClassInvariants();
 
     /**

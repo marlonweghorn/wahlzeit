@@ -52,6 +52,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
         this.z = z;
     }
 
+    /**
+     *
+     * @methodtype assertion
+     */
     @Override
     public void assertClassInvariants() {
 
@@ -70,7 +74,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodtype conversion
      */
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    protected CartesianCoordinate _asCartesianCoordinate() {
         return this;
     }
 
@@ -79,7 +83,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodtype get
      */
     @Override
-    public double getCartesianDistance(final Coordinate coordinate) {
+    protected double _getCartesianDistance(final Coordinate coordinate) {
         final CartesianCoordinate other = coordinate.asCartesianCoordinate();
 
         final double sum;
@@ -97,7 +101,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodtype conversion
      */
     @Override
-    public SphericCoordinate asSphericCoordinate() throws ArithmeticException {
+    protected SphericCoordinate _asSphericCoordinate() throws ArithmeticException {
         final double radius = Math.sqrt(x * x + y * y + z * z);
         final double phi = Math.acos(z / radius);
         final double theta;
@@ -117,7 +121,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
      *
      * @methodtype boolean-query
      */
-    public boolean isEqual(final Coordinate coordinate) {
+    @Override
+    protected boolean _isEqual(final Coordinate coordinate) {
         CartesianCoordinate other = coordinate.asCartesianCoordinate();
 
         final boolean eqX = Math.abs(other.getX() - x) <= EPSILON;
@@ -128,7 +133,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public int hashCode() {
+    protected int _hashCode() {
         return Objects.hash(x, y, z);
     }
 

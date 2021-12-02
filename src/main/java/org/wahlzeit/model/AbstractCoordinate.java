@@ -5,6 +5,80 @@ import org.wahlzeit.services.DataObject;
 
 public abstract class AbstractCoordinate extends DataObject implements Coordinate {
 
+    protected abstract CartesianCoordinate _asCartesianCoordinate();
+    protected abstract SphericCoordinate _asSphericCoordinate();
+
+    protected boolean _isEqual(final Coordinate coordinate) {
+        /* intentionally left blank -- may be implemented in subclass */
+        return false;
+    }
+
+    protected double _getCartesianDistance(final Coordinate coordinate) {
+        /* intentionally left blank -- may be implemented in subclass */
+        return 0.0;
+    }
+
+    protected double _getCentralAngle(final Coordinate coordinate) {
+        /* intentionally left blank -- may be implemented in subclass */
+        return 0.0;
+    }
+
+    protected int _hashCode() {
+        return 0;
+    }
+
+    /**
+     *
+     * @methodtype conversion
+     */
+    @Override
+    public CartesianCoordinate asCartesianCoordinate() {
+        assertClassInvariants();
+        CartesianCoordinate cartesianCoordinate = _asCartesianCoordinate();
+        assertClassInvariants();
+
+        return cartesianCoordinate;
+    }
+
+    /**
+     *
+     * @methodtype conversion
+     */
+    @Override
+    public SphericCoordinate asSphericCoordinate() {
+        assertClassInvariants();
+        SphericCoordinate sphericCoordinate = _asSphericCoordinate();
+        assertClassInvariants();
+
+        return sphericCoordinate;
+    }
+
+    /**
+     *
+     * @methodtype get
+     */
+    @Override
+    public double getCartesianDistance(Coordinate coordinate) {
+        assertClassInvariants();
+        double cartesianDistance = _asCartesianCoordinate()._getCartesianDistance(coordinate);
+        assertClassInvariants();
+
+        return cartesianDistance;
+    }
+
+    /**
+     *
+     * @methodtype get
+     */
+    @Override
+    public double getCentralAngle(Coordinate coordinate) {
+        assertClassInvariants();
+        double centralAngle = _asSphericCoordinate()._getCentralAngle(coordinate);
+        assertClassInvariants();
+
+        return centralAngle;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -19,29 +93,15 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     /**
      *
-     * @methodtype get
-     */
-    @Override
-    public double getCartesianDistance(Coordinate coordinate) {
-        return this.asCartesianCoordinate().getCartesianDistance(coordinate);
-    }
-
-    /**
-     *
-     * @methodtype get
-     */
-    @Override
-    public double getCentralAngle(Coordinate coordinate) {
-        return this.asSphericCoordinate().getCentralAngle(coordinate);
-    }
-
-    /**
-     *
      * @methodtype boolean-query
      */
     @Override
     public boolean isEqual(Coordinate coordinate) {
-        return this.asCartesianCoordinate().isEqual(coordinate);
+        assertClassInvariants();
+        boolean equals = _asCartesianCoordinate()._isEqual(coordinate);
+        assertClassInvariants();
+
+        return equals;
     }
 
     /**
@@ -49,6 +109,10 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
      * @methodtype conversion
      */
     public int hashCode() {
-        return this.asCartesianCoordinate().hashCode();
+        assertClassInvariants();
+        int hashCode = _asCartesianCoordinate()._hashCode();
+        assertClassInvariants();
+
+        return hashCode;
     }
 }

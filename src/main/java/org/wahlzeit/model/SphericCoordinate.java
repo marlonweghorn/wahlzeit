@@ -52,6 +52,10 @@ public class SphericCoordinate extends AbstractCoordinate {
         this.radius = radius;
     }
 
+    /**
+     *
+     * @methodtype assertion
+     */
     @Override
     public void assertClassInvariants() {
         assert radius > 0;
@@ -71,7 +75,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype conversion
      */
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    protected CartesianCoordinate _asCartesianCoordinate() {
         final double sinTheta = Math.sin(theta);
         final double cosTheta = Math.cos(theta);
         final double sinPhi = Math.sin(phi);
@@ -97,7 +101,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype conversion
      */
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    protected SphericCoordinate _asSphericCoordinate() {
         return this;
     }
 
@@ -106,7 +110,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype get
      */
     @Override
-    public double getCentralAngle(final Coordinate coordinate) {
+    protected double _getCentralAngle(final Coordinate coordinate) {
         final SphericCoordinate other = coordinate.asSphericCoordinate();
 
         final double sum;

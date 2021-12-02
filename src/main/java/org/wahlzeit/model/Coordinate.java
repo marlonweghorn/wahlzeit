@@ -5,6 +5,8 @@ public interface Coordinate {
     int NUM_VALID_DECIMAL_PLACES = 6;
     double EPSILON = 1 / Math.pow(10, NUM_VALID_DECIMAL_PLACES);
 
+    void assertClassInvariants();
+
     /**
      *
      * @methodtype conversion
@@ -21,7 +23,7 @@ public interface Coordinate {
      *
      * @methodtype get
      */
-    double getCartesianDistance(final AbstractCoordinate coordinate);
+    double getCartesianDistance(final Coordinate coordinate);
 
     /**
      *
@@ -33,7 +35,7 @@ public interface Coordinate {
      *
      * @methodtype get
      */
-    double getCentralAngle(final AbstractCoordinate coordinate);
+    double getCentralAngle(final Coordinate coordinate);
 
     /**
      *

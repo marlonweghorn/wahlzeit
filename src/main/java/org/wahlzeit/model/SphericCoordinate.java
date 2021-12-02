@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class SphericCoordinate extends AbstractCoordinate {
 
@@ -53,6 +52,11 @@ public class SphericCoordinate extends AbstractCoordinate {
         this.radius = radius;
     }
 
+    @Override
+    public void assertClassInvariants() {
+        assert radius > 0;
+    }
+
     /**
      *
      * @methodtype conversion
@@ -90,17 +94,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     /**
      *
-     * @methodtype get
-     */
-    @Override
-    public double getCartesianDistance(final AbstractCoordinate coordinate) {
-        final CartesianCoordinate thisCartesianCoordinate = this.asCartesianCoordinate();
-
-        return thisCartesianCoordinate.getCartesianDistance(coordinate);
-    }
-
-    /**
-     *
      * @methodtype conversion
      */
     @Override
@@ -113,7 +106,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype get
      */
     @Override
-    public double getCentralAngle(final AbstractCoordinate coordinate) {
+    public double getCentralAngle(final Coordinate coordinate) {
         final SphericCoordinate other = coordinate.asSphericCoordinate();
 
         final double sum;
@@ -123,20 +116,6 @@ public class SphericCoordinate extends AbstractCoordinate {
                 + Math.cos(phi) * Math.cos(other.getPhi()) * Math.cos(thetaDiff);
 
         return Math.acos(sum);
-    }
-
-    /**
-     *
-     * @methodtype boolean-query
-     */
-    @Override
-    public boolean isEqual(final Coordinate coordinate) {
-        return this.asCartesianCoordinate().isEqual(coordinate);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.asCartesianCoordinate().hashCode();
     }
 
     /**

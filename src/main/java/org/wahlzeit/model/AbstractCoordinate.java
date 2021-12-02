@@ -19,7 +19,36 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     /**
      *
+     * @methodtype get
+     */
+    @Override
+    public double getCartesianDistance(Coordinate coordinate) {
+        return this.asCartesianCoordinate().getCartesianDistance(coordinate);
+    }
+
+    /**
+     *
+     * @methodtype get
+     */
+    @Override
+    public double getCentralAngle(Coordinate coordinate) {
+        return this.asSphericCoordinate().getCentralAngle(coordinate);
+    }
+
+    /**
+     *
+     * @methodtype boolean-query
+     */
+    @Override
+    public boolean isEqual(Coordinate coordinate) {
+        return this.asCartesianCoordinate().isEqual(coordinate);
+    }
+
+    /**
+     *
      * @methodtype conversion
      */
-    public abstract int hashCode();
+    public int hashCode() {
+        return this.asCartesianCoordinate().hashCode();
+    }
 }

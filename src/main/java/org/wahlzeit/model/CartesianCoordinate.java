@@ -52,6 +52,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
         this.z = z;
     }
 
+    @Override
+    public void assertClassInvariants() {
+
+    }
+
     /**
      *
      * @methodtype conversion
@@ -74,7 +79,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodtype get
      */
     @Override
-    public double getCartesianDistance(final AbstractCoordinate coordinate) {
+    public double getCartesianDistance(final Coordinate coordinate) {
         final CartesianCoordinate other = coordinate.asCartesianCoordinate();
 
         final double sum;
@@ -110,22 +115,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     /**
      *
-     * @methodtype get
-     */
-    @Override
-    public double getCentralAngle(final AbstractCoordinate coordinate) {
-        final SphericCoordinate thisSphericCoordinate = this.asSphericCoordinate();
-
-        return thisSphericCoordinate.getCentralAngle(coordinate);
-    }
-
-    /**
-     *
      * @methodtype boolean-query
      */
-    @Override
     public boolean isEqual(final Coordinate coordinate) {
-        final CartesianCoordinate other = coordinate.asCartesianCoordinate();
+        CartesianCoordinate other = coordinate.asCartesianCoordinate();
 
         final boolean eqX = Math.abs(other.getX() - x) <= EPSILON;
         final boolean eqY = Math.abs(other.getY() - y) <= EPSILON;

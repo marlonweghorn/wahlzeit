@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
+
 public class CartesianCoordinate extends AbstractCoordinate {
 
     private double x;
@@ -16,7 +17,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
         this.y = y;
         this.z = z;
     }
-
 
     /**
      *
@@ -58,7 +58,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      */
     @Override
     public void assertClassInvariants() {
-
+        /* intentionally left blank -- nothing to check */
     }
 
     /**
@@ -103,15 +103,20 @@ public class CartesianCoordinate extends AbstractCoordinate {
     @Override
     protected SphericCoordinate _asSphericCoordinate() throws ArithmeticException {
         final double radius = Math.sqrt(x * x + y * y + z * z);
-        final double phi = Math.acos(z / radius);
-        final double theta;
+
+        if (radius <= EPSILON) {
+            return new SphericCoordinate(0, 0, 0);
+        }
+
+        final double theta = Math.acos(z / radius);
+        final double phi;
 
         if (x > 0) {
-            theta = Math.atan(y / x);
+            phi = Math.atan(y / x);
         } else if (x == 0) {
-            theta = Math.PI / 2;
+            phi = Math.PI / 2;
         } else {
-            theta = Math.atan(y / x) + Math.PI;
+            phi = Math.atan(y / x) + Math.PI;
         }
 
         return new SphericCoordinate(phi, theta, radius);

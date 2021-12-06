@@ -1,15 +1,13 @@
 package org.wahlzeit.model;
 
-public interface Coordinate {
+
+import org.wahlzeit.utils.ClassInvariants;
+
+
+public interface Coordinate extends ClassInvariants {
 
     int NUM_VALID_DECIMAL_PLACES = 6;
     double EPSILON = 1 / Math.pow(10, NUM_VALID_DECIMAL_PLACES);
-
-    /**
-     *
-     * @methodtype assertion
-     */
-    void assertClassInvariants();
 
     /**
      *

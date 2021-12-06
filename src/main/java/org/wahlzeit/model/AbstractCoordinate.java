@@ -2,6 +2,7 @@ package org.wahlzeit.model;
 
 
 import org.wahlzeit.services.DataObject;
+import static org.wahlzeit.utils.Assertions.assertIsNonNullArgument;
 
 public abstract class AbstractCoordinate extends DataObject implements Coordinate {
 
@@ -24,6 +25,7 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     }
 
     protected int _hashCode() {
+        /* intentionally left blank -- may be implemented in subclass */
         return 0;
     }
 
@@ -60,7 +62,10 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
         assertClassInvariants();
+        assertIsNonNullArgument(coordinate);
+
         double cartesianDistance = _asCartesianCoordinate()._getCartesianDistance(coordinate);
+
         assertClassInvariants();
 
         return cartesianDistance;
@@ -73,7 +78,10 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     @Override
     public double getCentralAngle(Coordinate coordinate) {
         assertClassInvariants();
+        assertIsNonNullArgument(coordinate);
+
         double centralAngle = _asSphericCoordinate()._getCentralAngle(coordinate);
+
         assertClassInvariants();
 
         return centralAngle;
@@ -98,7 +106,10 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     @Override
     public boolean isEqual(Coordinate coordinate) {
         assertClassInvariants();
+        assertIsNonNullArgument(coordinate);
+
         boolean equals = _asCartesianCoordinate()._isEqual(coordinate);
+
         assertClassInvariants();
 
         return equals;

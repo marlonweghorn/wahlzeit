@@ -58,6 +58,8 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public void assertClassInvariants() {
+        assert phi >= 0 && phi < 2 * Math.PI;
+        assert theta >= 0 && theta <= Math.PI;
         assert radius > 0;
     }
 
@@ -81,9 +83,9 @@ public class SphericCoordinate extends AbstractCoordinate {
         final double sinPhi = Math.sin(phi);
         final double cosPhi = Math.cos(phi);
 
-        final double x = radius * cosTheta * sinPhi;
+        final double x = radius * cosPhi * sinTheta;
         final double y = radius * sinTheta * sinPhi;
-        final double z = radius * cosPhi;
+        final double z = radius * cosTheta;
 
 
         final double xRounded =
@@ -114,12 +116,18 @@ public class SphericCoordinate extends AbstractCoordinate {
         final SphericCoordinate other = coordinate.asSphericCoordinate();
 
         final double sum;
+        final double centralAngle;
+
         final double thetaDiff = Math.abs(theta - other.getTheta());
 
         sum = Math.sin(phi) * Math.sin(other.getPhi())
                 + Math.cos(phi) * Math.cos(other.getPhi()) * Math.cos(thetaDiff);
 
-        return Math.acos(sum);
+        centralAngle = Math.acos(sum);
+
+        assert 0 <= centralAngle && centralAngle <= 360;
+
+        return centralAngle;
     }
 
     /**

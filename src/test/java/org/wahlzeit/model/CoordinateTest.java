@@ -1,9 +1,12 @@
 package org.wahlzeit.model;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -12,6 +15,9 @@ import static org.mockito.Mockito.*;
  * All test cases of the class {@link AbstractCoordinate}.
  */
 public class CoordinateTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testCartesianSerialization() throws SQLException {
@@ -97,7 +103,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testGetSphericDistance() {
+    public void testGetCentralAngle() {
         SphericCoordinate sphericCoordinate = new SphericCoordinate(0.6405223,1.1071485, 3.7416573);
         SphericCoordinate sphericCoordinateOther = new SphericCoordinate(0.8916760, 0.8329812, 19.1049713);
         double centralAngle;
@@ -138,5 +144,60 @@ public class CoordinateTest {
         assertNotEquals(coordinate, new CartesianCoordinate(0, epsilon_greater, 0));
         assertNotEquals(coordinate, new CartesianCoordinate(0, 0, epsilon_greater));
         assertNotEquals(coordinate, null);
+    }
+
+    @Test
+    public void testPreConditions() {
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.6405223,1.1071485, 3.7416573);
+
+        try {
+            sphericCoordinate.getCentralAngle(null);
+            assert false;
+        } catch (AssertionError ae) {
+            assert true;
+        }
+
+        try {
+            sphericCoordinate.getCartesianDistance(null);
+            assert false;
+        } catch (AssertionError ae) {
+            assert true;
+        }
+
+        try {
+            sphericCoordinate.isEqual(null);
+            assert false;
+        } catch (AssertionError ae) {
+            assert true;
+        }
+    }
+
+    @Test
+    public void testSphericClassInvariants() {
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.6405223,1.1071485, 3.7416573);
+
+        SphericCoordinate sphericSpy = spy(sphericCoordinate);
+
+        sphericSpy.asSphericCoordinate();
+
+        verify(sphericSpy, times(2)).assertClassInvariants();
+
+
+        // Test e.g. the first class invariant
+        try {
+            sphericCoordinate.setSphericCoordinate(-1, 1.1071485, 3.7416573);
+            sphericCoordinate.asSphericCoordinate();
+            assert false;
+        } catch (AssertionError ae) {
+            assert true;
+        }
+
+        try {
+            sphericCoordinate.setSphericCoordinate(2 * Math.PI, 1.1071485, 3.7416573);
+            sphericCoordinate.asSphericCoordinate();
+            assert false;
+        } catch (AssertionError ae) {
+            assert true;
+        }
     }
 }

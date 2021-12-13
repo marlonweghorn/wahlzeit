@@ -101,7 +101,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodtype conversion
      */
     @Override
-    protected SphericCoordinate _asSphericCoordinate() throws ArithmeticException {
+    protected SphericCoordinate _asSphericCoordinate() {
         final double radius = Math.sqrt(x * x + y * y + z * z);
 
         if (radius <= EPSILON) {

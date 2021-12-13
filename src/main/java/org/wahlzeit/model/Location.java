@@ -4,11 +4,15 @@ import java.sql.*;
 
 import org.wahlzeit.services.DataObject;
 
+import static org.wahlzeit.utils.Assertions.assertIsNonNullArgument;
+
 public class Location extends DataObject {
 
     private AbstractCoordinate coordinate;
 
     public Location(final AbstractCoordinate coordinate) {
+        assertIsNonNullArgument(coordinate);
+
         this.coordinate = coordinate;
     }
 
@@ -26,6 +30,8 @@ public class Location extends DataObject {
      * @methodtype set
      */
     public void setCoordinate(final AbstractCoordinate coordinate) {
+        assertIsNonNullArgument(coordinate);
+
         this.coordinate = coordinate;
     }
 

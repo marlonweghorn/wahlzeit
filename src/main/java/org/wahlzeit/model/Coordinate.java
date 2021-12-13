@@ -31,7 +31,7 @@ public interface Coordinate extends ClassInvariants {
      *
      * @methodtype conversion
      */
-    SphericCoordinate asSphericCoordinate();
+    SphericCoordinate asSphericCoordinate() throws ArithmeticException;
 
     /**
      *

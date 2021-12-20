@@ -21,7 +21,7 @@ public class CoordinateTest {
 
     @Test
     public void testCartesianSerialization() throws SQLException {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(42, 73, 6174);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(42, 73, 6174);
         ResultSet rset = mock(ResultSet.class);
 
         cartesianCoordinate.writeOn(rset);
@@ -33,7 +33,7 @@ public class CoordinateTest {
 
     @Test
     public void testSphericSerialization() throws SQLException {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(42, 73, 6174);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(42, 73, 6174);
         SphericCoordinate sphericCoordinate = cartesianCoordinate.asSphericCoordinate();
 
         ResultSet rset = mock(ResultSet.class);
@@ -48,7 +48,7 @@ public class CoordinateTest {
 
     @Test
     public void testCartesianInterpretation() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, 2, 3);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(1, 2, 3);
         for (int i = 0; i < 1_000_000; i++) {
             cartesianCoordinate = cartesianCoordinate
                     .asSphericCoordinate()
@@ -61,7 +61,7 @@ public class CoordinateTest {
 
     @Test
     public void testSphericInterpretation() {
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.6405223,1.1071485, 3.7416573);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinate(0.6405223,1.1071485, 3.7416573);
         for (int i = 0; i < 1_000_000; i++) {
             sphericCoordinate = sphericCoordinate
                     .asCartesianCoordinate()
@@ -74,8 +74,9 @@ public class CoordinateTest {
 
     @Test
     public void testGetCartesianDistance_1() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, 2, 3);
-        CartesianCoordinate cartesianCoordinateOther = new CartesianCoordinate(10, 11, 12);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(1, 2, 3);
+        CartesianCoordinate cartesianCoordinateOther = CartesianCoordinate.getCartesianCoordinate(10, 11, 12);
+
         double cartesianDistance;
 
         cartesianDistance = cartesianCoordinate.getCartesianDistance(cartesianCoordinateOther);
@@ -89,8 +90,8 @@ public class CoordinateTest {
 
     @Test
     public void testGetCartesianDistance_2() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0, 0, 0);
-        CartesianCoordinate cartesianCoordinateOther = new CartesianCoordinate(42, 73, 6174);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(0, 0, 0);
+        CartesianCoordinate cartesianCoordinateOther = CartesianCoordinate.getCartesianCoordinate(42, 73, 6174);
         double cartesianDistance;
 
         cartesianDistance = cartesianCoordinate.getCartesianDistance(cartesianCoordinateOther);
@@ -104,8 +105,8 @@ public class CoordinateTest {
 
     @Test
     public void testGetCentralAngle() {
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.6405223,1.1071485, 3.7416573);
-        SphericCoordinate sphericCoordinateOther = new SphericCoordinate(0.8916760, 0.8329812, 19.1049713);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinate(0.6405223,1.1071485, 3.7416573);
+        SphericCoordinate sphericCoordinateOther = SphericCoordinate.getSphericCoordinate(0.8916760, 0.8329812, 19.1049713);
         double centralAngle;
 
         centralAngle = sphericCoordinate.getCentralAngle(sphericCoordinateOther);
@@ -119,36 +120,36 @@ public class CoordinateTest {
 
     @Test
     public void testCartesianCoordinateEquals() {
-        CartesianCoordinate coordinate = new CartesianCoordinate(0, 0, 0);
+        CartesianCoordinate coordinate = CartesianCoordinate.getCartesianCoordinate(0, 0, 0);
 
         assertEquals(coordinate, coordinate);
 
-        assertEquals(coordinate, new CartesianCoordinate(AbstractCoordinate.EPSILON, 0, 0));
-        assertEquals(coordinate, new CartesianCoordinate(0, AbstractCoordinate.EPSILON, 0));
-        assertEquals(coordinate, new CartesianCoordinate(0, 0, AbstractCoordinate.EPSILON));
+        assertNotEquals(coordinate, CartesianCoordinate.getCartesianCoordinate(AbstractCoordinate.EPSILON, 0, 0));
+        assertNotEquals(coordinate, CartesianCoordinate.getCartesianCoordinate(0, AbstractCoordinate.EPSILON, 0));
+        assertNotEquals(coordinate, CartesianCoordinate.getCartesianCoordinate(0, 0, AbstractCoordinate.EPSILON));
 
         double epsilon_smaller = AbstractCoordinate.EPSILON - AbstractCoordinate.EPSILON * .1;
 
-        assertEquals(coordinate, new CartesianCoordinate(epsilon_smaller, 0, 0));
-        assertEquals(coordinate, new CartesianCoordinate(0, epsilon_smaller, 0));
-        assertEquals(coordinate, new CartesianCoordinate(0, 0, epsilon_smaller));
+        assertNotEquals(coordinate, CartesianCoordinate.getCartesianCoordinate(epsilon_smaller, 0, 0));
+        assertNotEquals(coordinate, CartesianCoordinate.getCartesianCoordinate(0, epsilon_smaller, 0));
+        assertNotEquals(coordinate, CartesianCoordinate.getCartesianCoordinate(0, 0, epsilon_smaller));
     }
 
     @Test
     public void testCartesianCoordinateNotEquals() {
-        CartesianCoordinate coordinate = new CartesianCoordinate(0, 0, 0);
+        CartesianCoordinate coordinate = CartesianCoordinate.getCartesianCoordinate(0, 0, 0);
 
         double epsilon_greater = AbstractCoordinate.EPSILON + AbstractCoordinate.EPSILON * .1;
 
-        assertNotEquals(coordinate, new CartesianCoordinate(epsilon_greater , 0, 0));
-        assertNotEquals(coordinate, new CartesianCoordinate(0, epsilon_greater, 0));
-        assertNotEquals(coordinate, new CartesianCoordinate(0, 0, epsilon_greater));
+        assertNotEquals(coordinate, CartesianCoordinate.getCartesianCoordinate(epsilon_greater , 0, 0));
+        assertNotEquals(coordinate, CartesianCoordinate.getCartesianCoordinate(0, epsilon_greater, 0));
+        assertNotEquals(coordinate, CartesianCoordinate.getCartesianCoordinate(0, 0, epsilon_greater));
         assertNotEquals(coordinate, null);
     }
 
     @Test
     public void testPreConditions() {
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.6405223,1.1071485, 3.7416573);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinate(0.6405223,1.1071485, 3.7416573);
 
         try {
             sphericCoordinate.getCentralAngle(null);
@@ -174,18 +175,11 @@ public class CoordinateTest {
 
     @Test
     public void testSphericClassInvariants() {
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.6405223,1.1071485, 3.7416573);
-
-        SphericCoordinate sphericSpy = spy(sphericCoordinate);
-
-        sphericSpy.asSphericCoordinate();
-
-        verify(sphericSpy, times(2)).assertClassInvariants();
-
+        SphericCoordinate sphericCoordinate;
 
         // Test e.g. the first class invariant
         try {
-            sphericCoordinate.setSphericCoordinate(-1, 1.1071485, 3.7416573);
+            sphericCoordinate = SphericCoordinate.getSphericCoordinate(-1, 1.1071485, 3.7416573);
             sphericCoordinate.asSphericCoordinate();
             assert false;
         } catch (AssertionError ae) {
@@ -193,7 +187,7 @@ public class CoordinateTest {
         }
 
         try {
-            sphericCoordinate.setSphericCoordinate(2 * Math.PI, 1.1071485, 3.7416573);
+            sphericCoordinate = SphericCoordinate.getSphericCoordinate(2 * Math.PI, 1.1071485, 3.7416573);
             sphericCoordinate.asSphericCoordinate();
             assert false;
         } catch (AssertionError ae) {

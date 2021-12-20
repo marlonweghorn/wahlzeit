@@ -27,7 +27,7 @@ public class LocationTest {
 
     @Test
     public void testGetCoordinate() {
-        AbstractCoordinate coordinate = new CartesianCoordinate(0, 0, 0);
+        AbstractCoordinate coordinate = CartesianCoordinate.getCartesianCoordinate(0, 0, 0);
         Location location = new Location(coordinate);
 
         assertTrue(location.getCoordinate().isEqual(coordinate));
@@ -35,16 +35,16 @@ public class LocationTest {
 
     @Test
     public void testSetCoordinate() {
-        Location location = new Location(new CartesianCoordinate(0, 0, 0));
+        Location location = new Location(CartesianCoordinate.getCartesianCoordinate(0, 0, 0));
 
-        location.setCoordinate(new CartesianCoordinate(1, 1, 1));
+        location.setCoordinate(CartesianCoordinate.getCartesianCoordinate(1, 1, 1));
 
-        assertTrue(location.getCoordinate().isEqual(new CartesianCoordinate(1, 1, 1)));
+        assertTrue(location.getCoordinate().isEqual(CartesianCoordinate.getCartesianCoordinate(1, 1, 1)));
     }
 
     @Test
     public void testAsString() {
-        Location location = new Location(new CartesianCoordinate(0, 0, 0));
+        Location location = new Location(CartesianCoordinate.getCartesianCoordinate(0, 0, 0));
 
         String location_string = "0.0 0.0 0.0";
 

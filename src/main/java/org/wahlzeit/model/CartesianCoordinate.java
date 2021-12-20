@@ -4,15 +4,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 
-public class CartesianCoordinate extends AbstractCoordinate {
+public final class CartesianCoordinate extends AbstractCoordinate {
 
-    private double x;
-    private double y;
-    private double z;
+    private static final ConcurrentHashMap<Integer, CartesianCoordinate> cartesianCoordinates = new ConcurrentHashMap<>();
 
-    public CartesianCoordinate(final double x, final double y, final double z) {
+    private final double x;
+    private final double y;
+    private final double z;
+
+    private CartesianCoordinate(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -44,12 +47,16 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     /**
      *
-     * @methodtype set
+     * @methodtype get
      */
-    public void setCartesianCoordinate(final double x, final double y, final double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public static CartesianCoordinate getCartesianCoordinate(final double x, final double y, final double z) {
+        final int hash = Objects.hash(x, y, z);
+        CartesianCoordinate cartesianCoordinate = cartesianCoordinates.get(hash);
+        if (cartesianCoordinate == null) {
+            cartesianCoordinate = new CartesianCoordinate(x, y, z);
+            cartesianCoordinates.put(hash, cartesianCoordinate);
+        }
+        return cartesianCoordinate;
     }
 
     /**
@@ -105,7 +112,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         final double radius = Math.sqrt(x * x + y * y + z * z);
 
         if (radius <= EPSILON) {
-            return new SphericCoordinate(0, 0, 0);
+            return SphericCoordinate.getSphericCoordinate(0, 0, 0);
         }
 
         final double theta = Math.acos(z / radius);
@@ -119,7 +126,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
             phi = Math.atan(y / x) + Math.PI;
         }
 
-        return new SphericCoordinate(phi, theta, radius);
+        return SphericCoordinate.getSphericCoordinate(phi, theta, radius);
     }
 
     /**
@@ -137,11 +144,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return eqX && eqY && eqZ;
     }
 
-    @Override
-    protected int _hashCode() {
-        return Objects.hash(x, y, z);
-    }
-
     /**
      *
      */
@@ -156,9 +158,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
      */
     @Override
     public void readFrom(ResultSet rset) throws SQLException {
-        this.x = rset.getDouble("x");
-        this.y = rset.getDouble("y");
-        this.z = rset.getDouble("z");
+        final double x = rset.getDouble("x");
+        final double y = rset.getDouble("y");
+        final double z = rset.getDouble("z");
+
+        getCartesianCoordinate(x, y, z);
     }
 
     /**

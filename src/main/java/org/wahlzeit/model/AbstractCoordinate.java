@@ -24,11 +24,6 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
         return 0.0;
     }
 
-    protected int _hashCode() {
-        /* intentionally left blank -- may be implemented in subclass */
-        return 0;
-    }
-
     /**
      *
      * @methodtype conversion
@@ -87,18 +82,6 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
         return centralAngle;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Coordinate)) {
-            return false;
-        }
-        Coordinate other = (Coordinate) obj;
-        return isEqual(other);
-    }
-
     /**
      *
      * @methodtype boolean-query
@@ -113,17 +96,5 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
         assertClassInvariants();
 
         return equals;
-    }
-
-    /**
-     *
-     * @methodtype conversion
-     */
-    public int hashCode() {
-        assertClassInvariants();
-        int hashCode = _asCartesianCoordinate()._hashCode();
-        assertClassInvariants();
-
-        return hashCode;
     }
 }

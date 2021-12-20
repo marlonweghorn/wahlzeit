@@ -5,15 +5,19 @@ import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class SphericCoordinate extends AbstractCoordinate {
+public final class SphericCoordinate extends AbstractCoordinate {
 
-    private double phi;
-    private double theta;
-    private double radius;
+    private static final ConcurrentHashMap<Integer, SphericCoordinate> sphericCoordinates = new ConcurrentHashMap<>();
 
-    public SphericCoordinate(final double phi, final double theta, final double radius) {
-        this.phi = phi; // lambda
+    private final double phi;
+    private final double theta;
+    private final double radius;
+
+    private SphericCoordinate(final double phi, final double theta, final double radius) {
+        this.phi = phi;
         this.theta = theta;
         this.radius = radius;
     }
@@ -44,12 +48,16 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     /**
      *
-     * @methodtype set
+     * @methodtype get
      */
-    public void setSphericCoordinate(final double phi, final double theta, final double radius) {
-        this.phi = phi;
-        this.theta = theta;
-        this.radius = radius;
+    public static SphericCoordinate getSphericCoordinate(final double phi, final double theta, final double radius) {
+        final int hash = Objects.hash(phi, theta, radius);
+        SphericCoordinate sphericCoordinate = sphericCoordinates.get(hash);
+        if (sphericCoordinate == null) {
+            sphericCoordinate = new SphericCoordinate(phi, theta, radius);
+            sphericCoordinates.put(hash, sphericCoordinate);
+        }
+        return sphericCoordinate;
     }
 
     /**
@@ -87,7 +95,6 @@ public class SphericCoordinate extends AbstractCoordinate {
         final double y = radius * sinTheta * sinPhi;
         final double z = radius * cosTheta;
 
-
         final double xRounded =
                 new BigDecimal(x).setScale(NUM_VALID_DECIMAL_PLACES + 1, RoundingMode.HALF_DOWN).doubleValue();
         final double yRounded =
@@ -95,7 +102,7 @@ public class SphericCoordinate extends AbstractCoordinate {
         final double zRounded =
                 new BigDecimal(z).setScale(NUM_VALID_DECIMAL_PLACES + 1, RoundingMode.HALF_DOWN).doubleValue();
 
-        return new CartesianCoordinate(xRounded, yRounded, zRounded);
+        return CartesianCoordinate.getCartesianCoordinate(xRounded, yRounded, zRounded);
     }
 
     /**

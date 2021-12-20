@@ -452,7 +452,7 @@ public class User extends Client implements Persistent {
 		photos.add(newPhoto);
 		incWriteCount();
 
-		AbstractCoordinate coordinate = new CartesianCoordinate(42, 42, 42);
+		CartesianCoordinate coordinate = CartesianCoordinate.getCartesianCoordinate(42, 42, 42);
 		Location location = new Location(coordinate);
 		newPhoto.setLocation(location);
 

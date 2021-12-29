@@ -1,10 +1,18 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.SysLog;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
+@PatternInstance(
+    patternName = "Abstract Factory",
+    participants = {
+        "ConcreteFactory"
+    }
+)
 public class GoldCoinPhotoFactory extends PhotoFactory {
 
     /**

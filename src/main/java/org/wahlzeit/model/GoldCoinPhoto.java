@@ -1,8 +1,17 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
+@PatternInstance(
+    patternName = "Abstract Factory",
+    participants = {
+        "ConcreteProduct"
+    }
+)
 public class GoldCoinPhoto extends Photo {
 
     private double karat = 0;

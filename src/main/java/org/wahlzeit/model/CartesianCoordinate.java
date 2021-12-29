@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +9,12 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 
+@PatternInstance(
+    patternName = "Template Method",
+    participants = {
+        "ConcreteClass"
+    }
+)
 public final class CartesianCoordinate extends AbstractCoordinate {
 
     private static final ConcurrentHashMap<Integer, CartesianCoordinate> cartesianCoordinates = new ConcurrentHashMap<>();

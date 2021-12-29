@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.PreparedStatement;
@@ -8,6 +10,13 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+
+@PatternInstance(
+    patternName = "Template Method",
+    participants = {
+        "ConcreteClass"
+    }
+)
 public final class SphericCoordinate extends AbstractCoordinate {
 
     private static final ConcurrentHashMap<Integer, SphericCoordinate> sphericCoordinates = new ConcurrentHashMap<>();

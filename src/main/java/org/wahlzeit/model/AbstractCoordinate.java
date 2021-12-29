@@ -1,9 +1,16 @@
 package org.wahlzeit.model;
 
-
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.DataObject;
 import static org.wahlzeit.utils.Assertions.assertIsNonNullArgument;
 
+
+@PatternInstance(
+    patternName = "Template Method",
+    participants = {
+        "AbstractClass"
+    }
+)
 public abstract class AbstractCoordinate extends DataObject implements Coordinate {
 
     protected abstract CartesianCoordinate _asCartesianCoordinate();

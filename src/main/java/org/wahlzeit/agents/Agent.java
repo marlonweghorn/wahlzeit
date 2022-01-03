@@ -5,11 +5,18 @@
 
 package org.wahlzeit.agents;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.*;
 
 /**
  * An Agent executes background tasks.
  */
+@PatternInstance(
+	patternName = "Observer",
+	participants = {
+		"Subject"
+	}
+)
 public abstract class Agent implements Runnable {
 	
 	/**

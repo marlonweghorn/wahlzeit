@@ -8,6 +8,7 @@ package org.wahlzeit.agents;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.services.mailing.*;
@@ -18,6 +19,12 @@ import org.wahlzeit.services.mailing.*;
  * @author dirkriehle
  *
  */
+@PatternInstance(
+	patternName = "Observer",
+	participants = {
+		"ConcreteSubject"
+	}
+)
 public class NotifyAboutPraiseAgent extends Agent {
 
 	/**

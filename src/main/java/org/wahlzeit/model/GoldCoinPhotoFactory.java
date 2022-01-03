@@ -13,6 +13,12 @@ import java.sql.SQLException;
         "ConcreteFactory"
     }
 )
+@PatternInstance(
+    patternName = "Singleton",
+    participants = {
+        "Singleton"
+    }
+)
 public class GoldCoinPhotoFactory extends PhotoFactory {
 
     /**
@@ -40,9 +46,7 @@ public class GoldCoinPhotoFactory extends PhotoFactory {
      * Method to set the singleton instance of PhotoFactory.
      */
     protected static synchronized void setInstance(GoldCoinPhotoFactory goldCoinPhotoFactory) {
-        if (instance != null) {
-            throw new IllegalStateException("attempt to initialize GoldCoinPhotoFactory twice");
-        }
+        assert instance != null;
 
         instance = goldCoinPhotoFactory;
     }

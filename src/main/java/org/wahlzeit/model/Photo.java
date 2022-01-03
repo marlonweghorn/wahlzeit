@@ -22,6 +22,12 @@ import org.wahlzeit.utils.*;
 		"AbstractProduct", "ConcreteProduct"
 	}
 )
+@PatternInstance(
+	patternName = "Observer",
+	participants = {
+		"ConcreteObserver"
+	}
+)
 public class Photo extends DataObject {
 	/**
 	 * 

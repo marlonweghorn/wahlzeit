@@ -46,7 +46,9 @@ public class GoldCoinPhotoFactory extends PhotoFactory {
      * Method to set the singleton instance of PhotoFactory.
      */
     protected static synchronized void setInstance(GoldCoinPhotoFactory goldCoinPhotoFactory) {
-        assert instance != null;
+        if (instance != null) {
+            throw new IllegalStateException("attempt to initialize GoldCoinPhotoFactory twice");
+        }
 
         instance = goldCoinPhotoFactory;
     }

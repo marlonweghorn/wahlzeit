@@ -14,7 +14,7 @@ import java.sql.SQLException;
 )
 public class GoldCoinPhoto extends Photo {
 
-    private double karat = 0;
+    private GoldCoin goldCoin = null;
 
     /**
      *
@@ -45,7 +45,9 @@ public class GoldCoinPhoto extends Photo {
     @Override
     public void readFrom(ResultSet rset) throws SQLException {
         super.readFrom(rset);
-        this.karat = rset.getDouble("karat");
+        if (goldCoin != null) {
+            this.goldCoin.setKarat(rset.getDouble("karat"));
+        }
     }
 
     /**
@@ -54,23 +56,17 @@ public class GoldCoinPhoto extends Photo {
     @Override
     public void writeOn(ResultSet rset) throws SQLException {
         super.writeOn(rset);
-        rset.updateDouble("karat", this.karat);
-    }
-
-    /**
-     *
-     * @methodtype get
-     */
-    public double getKarat() {
-        return karat;
+        if (goldCoin != null) {
+            rset.updateDouble("karat", this.goldCoin.getKarat());
+        }
     }
 
     /**
      *
      * @methodtype set
      */
-    public void setKarat(final double karat) {
-        this.karat = karat;
+    public void setGoldCoin(final GoldCoin goldCoin) {
+        this.goldCoin = goldCoin;
     }
 
     /**

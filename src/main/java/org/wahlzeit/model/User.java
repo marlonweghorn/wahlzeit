@@ -456,7 +456,9 @@ public class User extends Client implements Persistent {
 		Location location = new Location(coordinate);
 		newPhoto.setLocation(location);
 
-		newPhoto.setKarat(999.9);
+		GoldCoin goldCoin = GoldCoinManager.getInstance().createGoldCoin("Maple Leaf 2022");
+		goldCoin.setKarat(999.9);
+		newPhoto.setGoldCoin(goldCoin);
 
 		newPhoto.setOwnerId(id);
 		newPhoto.setOwnerName(name);

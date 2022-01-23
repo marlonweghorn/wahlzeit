@@ -21,7 +21,7 @@ public class GoldCoinManager {
      *
      * @methodtype factory
      */
-    public GoldCoin createGoldCoin(final String typeName) {
+    public synchronized GoldCoin createGoldCoin(final String typeName) {
         assertIsNonNullArgument(typeName);
 
         final GoldCoinType goldCoinType = getGoldCoinType(typeName);
@@ -35,7 +35,7 @@ public class GoldCoinManager {
      *
      * @methodtype get or factory
      */
-    public GoldCoinType getGoldCoinType(final String typeName) {
+    public synchronized GoldCoinType getGoldCoinType(final String typeName) {
         if (goldCoinTypeMap.containsKey(typeName)) {
             return goldCoinTypeMap.get(typeName);
         } else {

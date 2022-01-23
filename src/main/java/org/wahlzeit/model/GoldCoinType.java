@@ -51,14 +51,6 @@ public class GoldCoinType {
 
     /**
      *
-     * @methodtype boolean
-     */
-    public boolean isSubType() {
-        return superType != null;
-    }
-
-    /**
-     *
      * @methodtype command
      */
     public void addSubType(final GoldCoinType goldCoinType) {
@@ -66,6 +58,29 @@ public class GoldCoinType {
 
         goldCoinType.setSuperType(this);
         subTypes.add(goldCoinType);
+    }
+
+    /**
+     *
+     * @methodtype boolean
+     */
+    public boolean isSubType(final GoldCoin goldCoin) {
+        assertIsNonNullArgument(goldCoin);
+
+        if (goldCoin.getType() == this) {
+            return false;
+        }
+
+        GoldCoinType _superType = getSuperType();
+
+        while (_superType != null) {
+            if (goldCoin.getType() == _superType) {
+                return true;
+            }
+            _superType = _superType.getSuperType();
+        }
+
+        return false;
     }
 
     /**
